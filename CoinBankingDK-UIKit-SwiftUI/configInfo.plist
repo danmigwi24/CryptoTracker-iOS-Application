@@ -12,7 +12,7 @@
 			<key>type</key>
 			<string>DEV</string>
 			<key>apiKey</key>
-			<string>coinranking4bf3d48f6788dad12bd8479280e85b708e7f37076a0cfc41</string>
+			<string>*</string>
 			<key>base-path</key>
 			<string>https://api.coinranking.com/v2</string>
 			<key>name</key>
