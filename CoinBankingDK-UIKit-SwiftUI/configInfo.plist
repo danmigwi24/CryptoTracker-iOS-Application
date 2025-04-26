@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>enableLogs</key>
+	<false/>
+	<key>environments</key>
+	<array>
+		<dict>
+			<key>apiKey</key>
+			<string>coinranking4bf3d48f6788dad12bd8479280e85b708e7f37076a0cfc41</string>
+			<key>type</key>
+			<string>DEV</string>
+			<key>active</key>
+			<true/>
+			<key>base-path</key>
+			<string>https://api.coinranking.com/v2</string>
+			<key>name</key>
+			<string>Development</string>
+			<key>early-build</key>
+			<false/>
+		</dict>
+		<dict>
+			<key>apiKey</key>
+			<string>coinranking4bf3d48f6788dad12bd8479280e85b708e7f37076a0cfc41</string>
+			<key>active</key>
+			<false/>
+			<key>base-path</key>
+			<string>https://api.coinranking.com/v2</string>
+			<key>type</key>
+			<string>UAT</string>
+			<key>name</key>
+			<string>Staging</string>
+			<key>early-build</key>
+			<false/>
+		</dict>
+	</array>
+</dict>
+</plist>
