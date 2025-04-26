@@ -41,20 +41,6 @@
 			);
 			target = 9B6A974D2DBCF90500668B27 /* CoinBankingDK-UIKit-SwiftUI */;
 		};
-		9B6A97A12DBCFBB600668B27 /* Exceptions for "CoinBankingDK-UIKit-SwiftUIUITests" folder in "CoinBankingDK-UIKit-SwiftUI" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				README.md,
-			);
-			target = 9B6A974D2DBCF90500668B27 /* CoinBankingDK-UIKit-SwiftUI */;
-		};
-		9B6A97A22DBCFBB600668B27 /* Exceptions for "CoinBankingDK-UIKit-SwiftUIUITests" folder in "CoinBankingDK-UIKit-SwiftUIUITests" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				README.md,
-			);
-			target = 9B6A976D2DBCF90700668B27 /* CoinBankingDK-UIKit-SwiftUIUITests */;
-		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -73,10 +59,6 @@
 		};
 		9B6A97712DBCF90700668B27 /* CoinBankingDK-UIKit-SwiftUIUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				9B6A97A12DBCFBB600668B27 /* Exceptions for "CoinBankingDK-UIKit-SwiftUIUITests" folder in "CoinBankingDK-UIKit-SwiftUI" target */,
-				9B6A97A22DBCFBB600668B27 /* Exceptions for "CoinBankingDK-UIKit-SwiftUIUITests" folder in "CoinBankingDK-UIKit-SwiftUIUITests" target */,
-			);
 			path = "CoinBankingDK-UIKit-SwiftUIUITests";
 			sourceTree = "<group>";
 		};
