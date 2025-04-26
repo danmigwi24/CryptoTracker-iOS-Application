@@ -80,7 +80,7 @@ class FavoritesViewController: UIViewController {
     
     private func setupBindings() {
         // Listen for changes in favorites
-        FavoritesManager.shared.$favorites
+        FavoritesViewModels.shared.$favorites
             .sink { [weak self] favorites in
                 self?.loadFavoriteCoins()
             }
@@ -88,7 +88,7 @@ class FavoritesViewController: UIViewController {
     }
     
     private func loadFavoriteCoins() {
-        let favoriteIds = FavoritesManager.shared.getFavorites()
+        let favoriteIds = FavoritesViewModels.shared.getFavorites()
         
         if favoriteIds.isEmpty {
             self.coins = []
@@ -166,7 +166,7 @@ extension FavoritesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let removeAction = UIContextualAction(style: .destructive, title: "Remove") { (action, view, completion) in
             let coin = self.coins[indexPath.row]
-            FavoritesManager.shared.removeFavorite(coinId: coin.uuid ?? "")
+            FavoritesViewModels.shared.removeFavorite(coinId: coin.uuid ?? "")
             completion(true)
         }
         

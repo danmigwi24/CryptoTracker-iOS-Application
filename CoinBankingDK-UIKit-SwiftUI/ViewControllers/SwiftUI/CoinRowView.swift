@@ -10,7 +10,7 @@ import SwiftUI
 
 struct CoinRowView: View {
     let coin: Coin
-    @ObservedObject private var favoritesManager = FavoritesManager.shared
+    @ObservedObject private var favoritesManager = FavoritesViewModels.shared
     
     var body: some View {
         HStack {

@@ -7,12 +7,12 @@
 	<key>environments</key>
 	<array>
 		<dict>
-			<key>apiKey</key>
-			<string></string>
-			<key>type</key>
-			<string>DEV</string>
 			<key>active</key>
 			<true/>
+			<key>type</key>
+			<string>DEV</string>
+			<key>apiKey</key>
+			<string>*</string>
 			<key>base-path</key>
 			<string>https://api.coinranking.com/v2</string>
 			<key>name</key>
@@ -22,7 +22,7 @@
 		</dict>
 		<dict>
 			<key>apiKey</key>
-			<string></string>
+			<string>*</string>
 			<key>active</key>
 			<false/>
 			<key>base-path</key>

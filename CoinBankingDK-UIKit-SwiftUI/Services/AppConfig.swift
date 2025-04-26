@@ -138,3 +138,21 @@ public struct AppEnvironment:Decodable {
 
 
 
+
+
+public func prettyPrintedJSONString(from jsonString: String) -> String {
+       // Convert the JSON string into a Data object
+       guard let data = jsonString.data(using: .utf8) else {
+           return jsonString
+       }
+
+       // Convert the Data object into a JSON object
+       guard let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []),
+             let prettyPrintedData = try? JSONSerialization.data(withJSONObject: jsonObject, options: .prettyPrinted) else {
+           return jsonString
+       }
+
+       // Convert the pretty-printed Data object back into a String
+    return String(data: prettyPrintedData, encoding: .utf8) ?? jsonString
+   }
+

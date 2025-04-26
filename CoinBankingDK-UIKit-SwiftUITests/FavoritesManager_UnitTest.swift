@@ -19,7 +19,7 @@ class FavoritesManagerTests: XCTestCase {
         super.setUp()
         // Clear UserDefaults before each test
         UserDefaults.standard.removeObject(forKey: "favoritedCoins")
-        favoritesManager = FavoritesManager.shared
+        favoritesManager = FavoritesViewModels.shared
     }
     
     override func tearDown() {
@@ -86,7 +86,7 @@ class FavoritesManagerTests: XCTestCase {
         favoritesManager.addFavorite(coinId: testCoinId2)
         
         // Create a new instance to test persistence
-        let newManager = FavoritesManager.shared
+        let newManager = FavoritesViewModels.shared
         XCTAssertEqual(newManager.getFavorites(), [testCoinId1, testCoinId2], "Favorites should persist between instances")
     }
     

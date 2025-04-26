@@ -1,16 +1,16 @@
 //
-//  FavoritesManager.swift
+//  FavoritesViewModels.swift
 //  CoinBankingDK-UIKit
 //
 //  Created by Daniel Kimani on 26/04/2025.
 //
 
-// Services/FavoritesManager.swift
+// Services/FavoritesViewModels.swift
 import Foundation
 import Combine
 
-class FavoritesManager: ObservableObject {
-    static let shared = FavoritesManager()
+class FavoritesViewModels: ObservableObject {
+    static let shared = FavoritesViewModels()
     
     private let favoritesKey = "favoritedCoins"
     

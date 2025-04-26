@@ -55,17 +55,17 @@ class CoinDetailViewController: UIViewController {
         
         /*
         // Add a favorite button to the navigation bar
-        let isFavorite = FavoritesManager.shared.isFavorite(coinId: coin.id)
+        let isFavorite = FavoritesViewModels.shared.isFavorite(coinId: coin.id)
         let favoriteImage = UIImage(systemName: isFavorite ? "star.fill" : "star")
         let favoriteButton = UIBarButtonItem(image: favoriteImage, style: .plain, target: self, action: #selector(toggleFavorite))
         favoriteButton.tintColor = .systemYellow
         navigationItem.rightBarButtonItem = favoriteButton
         
         // Listen for changes to update the favorite button
-        FavoritesManager.shared.$favorites
+         FavoritesViewModels.shared.$favorites
             .sink { [weak self] _ in
                 guard let self = self else { return }
-                let isFavorite = FavoritesManager.shared.isFavorite(coinId: self.coin.id)
+                let isFavorite = FavoritesViewModels.shared.isFavorite(coinId: self.coin.id)
                 let favoriteImage = UIImage(systemName: isFavorite ? "star.fill" : "star")
                 self.navigationItem.rightBarButtonItem?.image = favoriteImage
             }
@@ -74,7 +74,7 @@ class CoinDetailViewController: UIViewController {
     }
     
     @objc private func toggleFavorite() {
-        FavoritesManager.shared.toggleFavorite(coinId: coin.id)
+        FavoritesViewModels.shared.toggleFavorite(coinId: coin.id)
     }
 }
 

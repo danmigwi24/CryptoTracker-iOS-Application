@@ -18,6 +18,7 @@ class CoinListViewController: UIViewController {
     private var isFiltering = false
     private var sortOption: SortOption = .rank
     private var cancellables = Set<AnyCancellable>()
+    private let viewModel = CryptoViewModel()
     
     enum SortOption {
         case rank
@@ -90,7 +91,7 @@ class CoinListViewController: UIViewController {
     
     private func setupBindings() {
         // Listen for changes in favorites
-        FavoritesManager.shared.$favorites
+        FavoritesViewModels.shared.$favorites
             .sink { [weak self] _ in
                 // When favorites change, reload relevant cells
                 self?.tableView.reloadData()
@@ -100,6 +101,24 @@ class CoinListViewController: UIViewController {
     
     private func loadCoins() {
         activityIndicator.startAnimating()
+        
+        /*
+        viewModel.fetchCoinsPublisher { status, message, response in
+            self.activityIndicator.stopAnimating()
+            if status{
+                if self.currentPage == 0 {
+                    self.coins = response?.data?.coins ?? []
+                } else {
+                    self.coins.append(contentsOf: response?.data?.coins ?? [])
+                }
+                self.applySort()
+                self.tableView.reloadData()
+                
+            }else{
+                self.showAlert(title: "Error", message: message)
+            }
+        }
+         */
         
         APIService.shared.fetchCoins(offset: currentPage * pageSize, limit: pageSize) { [weak self] result in
             guard let self = self else { return }
@@ -121,6 +140,7 @@ class CoinListViewController: UIViewController {
                 }
             }
         }
+      
     }
     
     private func showAlert(title: String, message: String) {
@@ -189,11 +209,11 @@ extension CoinListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let coin = isFiltering ? filteredCoins[indexPath.row] : coins[indexPath.row]
-        let isFavorite = FavoritesManager.shared.isFavorite(coinId: coin.uuid ?? "")
+        let isFavorite = FavoritesViewModels.shared.isFavorite(coinId: coin.uuid ?? "")
         
         let title = isFavorite ? "Unfavorite" : "Favorite"
         let favoriteAction = UIContextualAction(style: .normal, title: title) { (action, view, completion) in
-            FavoritesManager.shared.toggleFavorite(coinId: coin.uuid ?? "")
+            FavoritesViewModels.shared.toggleFavorite(coinId: coin.uuid ?? "")
             completion(true)
         }
         

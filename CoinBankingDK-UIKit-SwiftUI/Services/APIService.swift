@@ -7,28 +7,8 @@
 
 // Services/APIService.swift
 import Foundation
-
-
-
-
-
-public func prettyPrintedJSONString(from jsonString: String) -> String {
-       // Convert the JSON string into a Data object
-       guard let data = jsonString.data(using: .utf8) else {
-           return jsonString
-       }
-
-       // Convert the Data object into a JSON object
-       guard let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []),
-             let prettyPrintedData = try? JSONSerialization.data(withJSONObject: jsonObject, options: .prettyPrinted) else {
-           return jsonString
-       }
-
-       // Convert the pretty-printed Data object back into a String
-    return String(data: prettyPrintedData, encoding: .utf8) ?? jsonString
-   }
-
-
+import Foundation
+import Combine
 
 enum APIError: Error {
     case invalidURL
@@ -39,13 +19,88 @@ enum APIError: Error {
 
 class APIService {
     static let shared = APIService()
-    //
+    
     // In a real app, you would store this securely or use environment variables
-    private let apiKey = AppConfig.Current?.Environment?.apiKey ?? "" // Replace with your actual API key
-    private let baseURL =  AppConfig.Current?.Environment?.baseApiUrl ?? ""//"https://api.coinranking.com/v2"//AVOID HANDCODED URLs
+    private let apiKey = AppConfig.Current?.Environment?.apiKey ?? ""
+    private let baseURL = AppConfig.Current?.Environment?.baseApiUrl ?? ""
     
     private init() {}
     
+    // Combine version of fetchCoins
+    func fetchCoinsPublisher(offset: Int = 0, limit: Int = 20) -> AnyPublisher<CoinResponse, APIError> {
+        let endpoint = "/coins"
+        let queryParams = "?offset=\(offset)&limit=\(limit)"
+        
+        guard let url = URL(string: baseURL + endpoint + queryParams) else {
+            return Fail(error: APIError.invalidURL).eraseToAnyPublisher()
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue(apiKey, forHTTPHeaderField: "x-access-token")
+        
+        return URLSession.shared.dataTaskPublisher(for: request)
+            .mapError { error -> APIError in
+                return .requestFailed(error)
+            }
+            .tryMap { data, response -> Data in
+                guard let httpResponse = response as? HTTPURLResponse,
+                      (200...299).contains(httpResponse.statusCode) else {
+                    throw APIError.invalidResponse
+                }
+                //
+                if let rawString = String(data: data, encoding: .utf8) {
+                    print("RESPONSE STRING : \(prettyPrintedJSONString(from: rawString))\n")
+                }
+                
+                return data
+            }
+            .decode(type: CoinResponse.self, decoder: JSONDecoder())
+            .mapError { error -> APIError in
+                if let apiError = error as? APIError {
+                    return apiError
+                }
+                return .invalidData
+            }
+            .eraseToAnyPublisher()
+    }
+    
+    // Combine version of fetchCoinDetails
+    func fetchCoinDetailsPublisher(uuid: String) -> AnyPublisher<CoinResponse, APIError> {
+        let endpoint = "/coin/\(uuid)"
+        
+        guard let url = URL(string: baseURL + endpoint) else {
+            return Fail(error: APIError.invalidURL).eraseToAnyPublisher()
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue(apiKey, forHTTPHeaderField: "x-access-token")
+        
+        return URLSession.shared.dataTaskPublisher(for: request)
+            .mapError { error -> APIError in
+                return .requestFailed(error)
+            }
+            .tryMap { data, response -> Data in
+                guard let httpResponse = response as? HTTPURLResponse,
+                      (200...299).contains(httpResponse.statusCode) else {
+                    throw APIError.invalidResponse
+                }
+                return data
+            }
+            .decode(type: CoinResponse.self, decoder: JSONDecoder())
+            .mapError { error -> APIError in
+                if let apiError = error as? APIError {
+                    return apiError
+                }
+                return .invalidData
+            }
+            .eraseToAnyPublisher()
+    }
+    
+    // Keep the original completion handler methods for backward compatibility
     func fetchCoins(offset: Int = 0, limit: Int = 20, completion: @escaping (Result<CoinResponse, APIError>) -> Void) {
         let endpoint = "/coins"
         let queryParams = "?offset=\(offset)&limit=\(limit)"
@@ -79,7 +134,6 @@ class APIService {
             
             do {
                 if let rawString = String(data: data, encoding: .utf8) {
-                    //print("Received data:", rawString)
                     print("RESPONSE STRING : \(prettyPrintedJSONString(from: rawString))\n")
                 }
                 
