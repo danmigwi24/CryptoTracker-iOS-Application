@@ -8,7 +8,7 @@
 	<array>
 		<dict>
 			<key>apiKey</key>
-			<string>coinranking4bf3d48f6788dad12bd8479280e85b708e7f37076a0cfc41</string>
+			<string></string>
 			<key>type</key>
 			<string>DEV</string>
 			<key>active</key>
@@ -22,7 +22,7 @@
 		</dict>
 		<dict>
 			<key>apiKey</key>
-			<string>coinranking4bf3d48f6788dad12bd8479280e85b708e7f37076a0cfc41</string>
+			<string></string>
 			<key>active</key>
 			<false/>
 			<key>base-path</key>
