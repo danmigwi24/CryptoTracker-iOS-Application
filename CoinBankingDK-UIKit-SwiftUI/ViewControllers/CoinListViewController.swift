@@ -102,32 +102,23 @@ class CoinListViewController: UIViewController {
     private func loadCoins() {
         activityIndicator.startAnimating()
         
-        /*
-        viewModel.fetchCoinsPublisher { status, message, response in
-            self.activityIndicator.stopAnimating()
-            if status{
-                if self.currentPage == 0 {
-                    self.coins = response?.data?.coins ?? []
-                } else {
-                    self.coins.append(contentsOf: response?.data?.coins ?? [])
+        APIService.shared.fetchCoinsPublisher(offset: currentPage * pageSize, limit: pageSize)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] completion in
+                
+                self?.activityIndicator.stopAnimating()
+                
+                guard let self = self else { return }
+                //
+                if case .failure(let error) = completion {
+                    print(error)
+                    //self.showAlert(title: "Error", message: error.localizedDescription)
+                    self.showAlert(title: "Error", message: "Failed to fetch coins.\nTry again later.")
                 }
-                self.applySort()
-                self.tableView.reloadData()
-                
-            }else{
-                self.showAlert(title: "Error", message: message)
-            }
-        }
-         */
-        
-        APIService.shared.fetchCoins(offset: currentPage * pageSize, limit: pageSize) { [weak self] result in
-            guard let self = self else { return }
-            
-            DispatchQueue.main.async {
-                self.activityIndicator.stopAnimating()
-                
-                switch result {
-                case .success(let response):
+            } receiveValue: { [weak self] response in
+                guard let self = self else { return }
+                //
+                if response.status == "success"{
                     if self.currentPage == 0 {
                         self.coins = response.data?.coins ?? []
                     } else {
@@ -135,12 +126,14 @@ class CoinListViewController: UIViewController {
                     }
                     self.applySort()
                     self.tableView.reloadData()
-                case .failure(let error):
-                    self.showAlert(title: "Error", message: error.localizedDescription)
+                }else{
+                    //self.showAlert(title: "Error", message: error.localizedDescription)
+                    self.showAlert(title: "Error", message: "Failed to fetch coins.\nTry again later.")
                 }
+                //
             }
-        }
-      
+            .store(in: &cancellables)
+        
     }
     
     private func showAlert(title: String, message: String) {

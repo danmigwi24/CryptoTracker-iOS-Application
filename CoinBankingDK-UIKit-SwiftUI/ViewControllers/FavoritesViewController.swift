@@ -98,8 +98,7 @@ class FavoritesViewController: UIViewController {
         
         activityIndicator.startAnimating()
         
-        // For simplicity, we'll fetch all coins and filter out favorites
-        // In a production app, you might want to fetch data for each favorite coin individually
+        // 
         APIService.shared.fetchCoins(limit: 100) { [weak self] result in
             guard let self = self else { return }
             
@@ -115,7 +114,9 @@ class FavoritesViewController: UIViewController {
                     self.updateUI()
                     
                 case .failure(let error):
-                    self.showAlert(title: "Error", message: error.localizedDescription)
+                    print(error)
+                    //self.showAlert(title: "Error", message: error.localizedDescription)
+                    self.showAlert(title: "Error", message: "Failed to fetch coins.\nTry again later.")
                 }
             }
         }
